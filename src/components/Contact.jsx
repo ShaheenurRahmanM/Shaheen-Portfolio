@@ -4,7 +4,7 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPhone } from "react-icons/fa";
 
 // Contact Section Styling
 const ContactSection = styled.section`
-  min-height: 60vh;
+  min-height: 100vh; /* Set the minimum height to 100vh to cover the full screen */
   width: 100vw;
   padding: 4rem 2rem;
   background: linear-gradient(135deg, #1a1a1a, #121212);
@@ -25,7 +25,17 @@ const ContactSection = styled.section`
       opacity: 1;
     }
   }
+
+  /* Add media queries to ensure proper padding and height for smaller screens */
+  @media (max-width: 768px) {
+    padding: 3rem 2rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 2rem 1.5rem;
+  }
 `;
+
 
 const SectionTitle = styled.h2`
   font-size: 3.5rem;

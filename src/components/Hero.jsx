@@ -271,7 +271,7 @@ const Hero = () => {
         transition={{ delay: 2.5 }}
         onClick={scrollToAbout}
       >
-        <span className="scroll-text">Scroll</span>
+        <span className="scroll-text">Tap to Scroll</span>
         <motion.div 
           className="arrow-container"
           animate={{ y: [0, 5, 0] }}
