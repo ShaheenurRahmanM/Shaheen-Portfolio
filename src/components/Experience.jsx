@@ -1,3 +1,109 @@
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
+import { FaLaptopCode, FaUserGraduate, FaRocket } from 'react-icons/fa';
+
+// Glowing background animation
+const glow = keyframes`
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+`;
+
+const ExperienceSection = styled.section`
+  min-height: 80vh;
+  padding: 6rem 2rem 4rem;
+  scroll-margin-top: 80px;
+  background: linear-gradient(-45deg, #1a1a1a, #222, #1f1f1f, #2c2c2c);
+  background-size: 400% 400%;
+  animation: ${glow} 15s ease infinite;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Heading = styled.h2`
+  font-size: 3rem;
+  color: #00c4ff;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  text-align: center;
+`;
+
+const Subtext = styled.p`
+  font-size: 1.2rem;
+  color: #ccc;
+  max-width: 600px;
+  text-align: center;
+  margin-bottom: 3rem;
+`;
+
+const IconRow = styled.div`
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 3rem;
+
+  svg {
+    font-size: 3rem;
+    color: #00c4ff;
+    transition: transform 0.4s ease;
+
+    &:hover {
+      transform: scale(1.3);
+    }
+  }
+`;
+
+const PlaceholderCard = styled.div`
+  border: 2px dashed #00c4ff;
+  padding: 2rem;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 0 15px rgba(0, 196, 255, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 30px rgba(0, 196, 255, 0.3);
+  }
+
+  h3 {
+    color: #00c4ff;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #ccc;
+  }
+`;
+
+const Experience = () => {
+  return (
+    <ExperienceSection id="experience">
+      <Heading>Experience: A Journey in Progress</Heading>
+      <Subtext>
+        Though I may not have formal experience yet, I'm constantly learning, building, and preparing to create meaningful impact.
+      </Subtext>
+
+      <IconRow>
+        <FaUserGraduate title="Learning Every Day" />
+        <FaLaptopCode title="Building Projects" />
+        <FaRocket title="Ready to Launch" />
+      </IconRow>
+
+      <PlaceholderCard>
+        <h3>Coming Soon...</h3>
+        <p>Stay tuned — my professional experience and achievements will be featured here shortly!</p>
+      </PlaceholderCard>
+    </ExperienceSection>
+  );
+};
+
+export default Experience;
+
+
 // import React from "react";
 // import styled from "styled-components";
 // import { motion } from "framer-motion";
@@ -104,109 +210,3 @@
 
 // export default Experience;
 
-
-
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { FaLaptopCode, FaUserGraduate, FaRocket } from 'react-icons/fa';
-
-// Glowing background animation
-const glow = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
-const ExperienceSection = styled.section`
-  min-height: 80vh;
-  padding: 6rem 2rem 4rem;
-  scroll-margin-top: 80px;
-  background: linear-gradient(-45deg, #1a1a1a, #222, #1f1f1f, #2c2c2c);
-  background-size: 400% 400%;
-  animation: ${glow} 15s ease infinite;
-  color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const Heading = styled.h2`
-  font-size: 3rem;
-  color: #00c4ff;
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  text-align: center;
-`;
-
-const Subtext = styled.p`
-  font-size: 1.2rem;
-  color: #ccc;
-  max-width: 600px;
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-const IconRow = styled.div`
-  display: flex;
-  gap: 3rem;
-  margin-bottom: 3rem;
-
-  svg {
-    font-size: 3rem;
-    color: #00c4ff;
-    transition: transform 0.4s ease;
-
-    &:hover {
-      transform: scale(1.3);
-    }
-  }
-`;
-
-const PlaceholderCard = styled.div`
-  border: 2px dashed #00c4ff;
-  padding: 2rem;
-  max-width: 500px;
-  text-align: center;
-  border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 0 15px rgba(0, 196, 255, 0.1);
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 0 30px rgba(0, 196, 255, 0.3);
-  }
-
-  h3 {
-    color: #00c4ff;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: #ccc;
-  }
-`;
-
-const Experience = () => {
-  return (
-    <ExperienceSection id="experience">
-      <Heading>Experience: A Journey in Progress</Heading>
-      <Subtext>
-        Though I may not have formal experience yet, I'm constantly learning, building, and preparing to create meaningful impact.
-      </Subtext>
-
-      <IconRow>
-        <FaUserGraduate title="Learning Every Day" />
-        <FaLaptopCode title="Building Projects" />
-        <FaRocket title="Ready to Launch" />
-      </IconRow>
-
-      <PlaceholderCard>
-        <h3>Coming Soon...</h3>
-        <p>Stay tuned — my professional experience and achievements will be featured here shortly!</p>
-      </PlaceholderCard>
-    </ExperienceSection>
-  );
-};
-
-export default Experience;
