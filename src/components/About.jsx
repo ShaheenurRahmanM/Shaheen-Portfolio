@@ -6,7 +6,7 @@ import prof from "../assests/prof.png";
 
 // About Section Styling
 const AboutSection = styled.section`
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -130,7 +130,7 @@ const About = () => {
           >
             About Me
           </AboutTitle>
-          <AboutText
+          {/* <AboutText
             initial={{ x: -100, opacity: 0 }}
             animate={inView ? { x: 0, opacity: 1 } : {}}
             transition={{ duration: 1.5, delay: 0.5 }}
@@ -139,6 +139,21 @@ const About = () => {
             in AI, data science, and front-end development. I love creating
             innovative solutions that bridge the gap between technology and
             real-world applications. Welcome to my portfolio!
+          </AboutText> */}
+          <AboutText
+            initial={{ x: -100, opacity: 0 }}
+            animate={inView ? { x: 0, opacity: 1 } : {}}
+            transition={{ duration: 1.5, delay: 0.5 }}
+          >
+            Hey, I’m Shaheen—a passionate developer and problem-solver with a deep curiosity for technology and innovation.
+            I thrive on building solutions that are not only functional but also meaningful. From exploring new frameworks 
+            to crafting intuitive designs, I’m always pushing my limits to grow and create.
+            <br /><br />
+            While my professional journey is still unfolding,
+            I’m constantly sharpening my skills and tackling challenges that fuel my creativity.
+            Whether it’s coding, designing, or collaborating on exciting projects, my goal is to bring ideas to life and make a real impact.
+            <br /><br />
+            Let’s connect and create something extraordinary together!
           </AboutText>
         </AboutTextContainer>
 

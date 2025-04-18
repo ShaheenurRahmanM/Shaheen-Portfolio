@@ -237,6 +237,7 @@ import styled from "styled-components";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
 import { motion } from "framer-motion";
+import "@fontsource/playfair-display";
 
 // Hero Section Style
 const HeroSection = styled.div`
@@ -257,12 +258,27 @@ const HeroContent = styled(motion.div)`
   z-index: 2;
   color: #fff;
 
+  // h1 {
+  //   font-size: 4rem;
+  //   color: #00c4ff;
+  //   margin-bottom: 1rem;
+  //   animation: fadeIn 2s;
+  // }
+
   h1 {
-    font-size: 4rem;
-    color: #00c4ff;
-    margin-bottom: 1rem;
-    animation: fadeIn 2s;
-  }
+  font-family: 'Playfair Display', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  // background: linear-gradient(90deg, #00c4ff, #00ffd0);
+  // -webkit-background-clip: text;
+  // -webkit-text-fill-color: transparent;
+  // text-shadow: 0 0 10px rgba(0, 196, 255, 0.3);
+  // background-size: 200% auto;
+  // animation: shimmer 3s linear infinite, fadeIn 2s;
+  color: #00c4ff; // Removed gradient effect
+    animation: fadeIn 2s; // Simple fade-in animation
+}
+
 
   h2 {
     font-size: 2rem;
@@ -289,6 +305,15 @@ const HeroContent = styled(motion.div)`
       transform: translateY(0);
     }
   }
+
+  @keyframes shimmer {
+  0% {
+    background-position: -500px 0;
+  }
+  100% {
+    background-position: 500px 0;
+  }
+}
 
   @media (max-width: 1024px) {
     h1 {
@@ -416,7 +441,7 @@ const Hero = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
       >
-        <h1>Shaheenur Rahman</h1>
+        <h1>Shaheenur Rahman M</h1>
         <h2>AI & Data Science Enthusiast</h2>
         <p>Welcome to my portfolio! Explore my work and journey.</p>
       </HeroContent>

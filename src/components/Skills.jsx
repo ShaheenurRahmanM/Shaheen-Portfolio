@@ -151,6 +151,7 @@ const Skills = () => {
 
       <TechStackContainer>
         <TechStackIconContainer
+          title="Python"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
@@ -161,6 +162,7 @@ const Skills = () => {
           </TechStackIcon>
         </TechStackIconContainer>
         <TechStackIconContainer
+          title="Java"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -171,6 +173,7 @@ const Skills = () => {
           </TechStackIcon>
         </TechStackIconContainer>
         <TechStackIconContainer
+          title="C++"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -181,6 +184,7 @@ const Skills = () => {
           </TechStackIcon>
         </TechStackIconContainer>
         <TechStackIconContainer
+          title="React"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -191,6 +195,7 @@ const Skills = () => {
           </TechStackIcon>
         </TechStackIconContainer>
         <TechStackIconContainer
+        title="SQL"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.6 }}

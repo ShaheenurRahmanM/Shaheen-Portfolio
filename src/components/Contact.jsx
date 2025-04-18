@@ -141,7 +141,7 @@ const Contact = () => {
     <ContactSection id="contact">
       <SectionTitle>Find Me On</SectionTitle>
       <ContactInfo>
-        Feel free to reach out to me through any of the platforms below. I look forward to connecting with you!
+        Feel free to reach out to me through any of the platforms below.<br /> I look forward to connecting with you!
       </ContactInfo>
       <IconsContainer>
         <IconLink
