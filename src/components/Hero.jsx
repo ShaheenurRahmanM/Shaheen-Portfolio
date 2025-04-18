@@ -118,15 +118,66 @@ const HeroContent = styled(motion.div)`
   }
 `;
 
+// const ScrollIndicator = styled(motion.div)`
+//   position: absolute;
+//   bottom: 40px;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   cursor: pointer;
+//   z-index: 3;
+//   display: none;
+
+//   @media (max-width: 768px) {
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     gap: 8px;
+//   }
+
+//   .scroll-text {
+//     color: #00c4ff;
+//     font-size: 0.8rem;
+//     text-transform: uppercase;
+//     letter-spacing: 2px;
+//   }
+
+//   .arrow-container {
+//     background: rgba(0, 196, 255, 0.1);
+//     border: 1px solid #00c4ff;
+//     border-radius: 50%;
+//     padding: 8px;
+//     width: 40px;
+//     height: 40px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     transition: all 0.3s ease;
+//   }
+
+//   &:hover .arrow-container {
+//     background: rgba(0, 196, 255, 0.2);
+//     transform: translateY(-2px);
+//   }
+
+//   .arrow {
+//     width: 0;
+//     height: 0;
+//     border-left: 8px solid transparent;
+//     border-right: 8px solid transparent;
+//     border-top: 8px solid #00c4ff;
+//   }
+// `;
+
 const ScrollIndicator = styled(motion.div)`
   position: absolute;
-  bottom: 40px;
+  bottom: 40px; /* Set the distance from the bottom */
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  z-index: 3;
-  display: none;
+  z-index: 5;
+  display: none; /* Hide by default */
 
+  /* Only show on mobile */
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
@@ -167,6 +218,8 @@ const ScrollIndicator = styled(motion.div)`
     border-top: 8px solid #00c4ff;
   }
 `;
+
+
 
 const Hero = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
