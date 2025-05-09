@@ -137,7 +137,7 @@ const Projects = () => {
       title: "Portfolio Website",
       description: "A modern, responsive portfolio website showcasing my work.",
       techStack: "React JS, Three JS, Styled Components",
-      image: "https://via.placeholder.com/400x200",
+      image: "https://shaheenurrahmanm.vercel.app/",
       link: "#",
     },
     {
@@ -155,7 +155,7 @@ const Projects = () => {
       description:
         "A tool to track personal finances, categorize expenses, and generate financial reports.",
       techStack: "HTML, CSS, JavaScript",
-      image: "https://via.placeholder.com/400x200",
+      image: "https://shaheenurrahmanm.github.io/FinanceTracker/",
       link: "#",
     },
     {
