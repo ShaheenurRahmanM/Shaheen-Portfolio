@@ -149,7 +149,7 @@ const Projects = () => {
       description:
         "Analyzes LinkedIn profiles and top job roles to detect and recommend skills to improve.",
       techStack: "Python, ML, Streamlit, NLP, AI",
-      link: "skillfit.streamlit.app",
+      link: "https://skillfit.streamlit.app/",
     },
     {
       id: 2,
