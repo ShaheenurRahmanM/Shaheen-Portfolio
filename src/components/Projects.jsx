@@ -165,7 +165,7 @@ const Projects = () => {
       description:
         "Transcribes audio and masks sensitive personal data using Whisper and LLMs.",
       techStack: "OpenAI Whisper, Python, Streamlit, NLP, LLMs, AI",
-      link: "#",
+      link: "https://github.com/ShaheenurRahmanM/Audio-PII-Masker-AI",
     },
     {
       id: 4,
@@ -188,8 +188,8 @@ const Projects = () => {
       title: "Blood Donation Portal",
       description:
         "Connects blood donors and seekers. Includes user registration, search, and donor listing.",
-      techStack: "React, Node.js, MongoDB",
-      link: "#",
+      techStack: "React, Node.js",
+      link: "https://github.com/ShaheenurRahmanM/BloodDonationApp",
     },
     {
       id: 7,
@@ -205,7 +205,7 @@ const Projects = () => {
       description:
         "Auto-generates custom workout plans based on user goals and preferences.",
       techStack: "Python",
-      link: "#",
+      link: "https://github.com/ShaheenurRahmanM/FitnessPlanGenerator",
     },
     {
       id: 9,
@@ -213,7 +213,7 @@ const Projects = () => {
       description:
         "Mobile shopping app with clean UI for ordering dry fruits and spices.",
       techStack: "React Native",
-      link: "#",
+      link: "https://github.com/ShaheenurRahmanM/ITradersApp",
     },
   ];
 
