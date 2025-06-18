@@ -1,212 +1,278 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
-import { FaLaptopCode, FaUserGraduate, FaRocket } from 'react-icons/fa';
+import React from "react";
+import styled from "styled-components";
+import { FaProjectDiagram } from "react-icons/fa";
 
-// Glowing background animation
-const glow = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
+// Section Wrapper
 const ExperienceSection = styled.section`
-  min-height: 80vh;
-  padding: 6rem 2rem 4rem;
-  scroll-margin-top: 80px;
-  background: linear-gradient(-45deg, #1a1a1a, #222, #1f1f1f, #2c2c2c);
-  background-size: 400% 400%;
-  animation: ${glow} 15s ease infinite;
-  color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  background: linear-gradient(135deg, #0f0f2d, #1a1a3a);
+  padding: 15rem 1rem 3rem 1rem;
+  color: #fff;
 `;
 
-const Heading = styled.h2`
+// Section Title
+const SectionTitle = styled.h2`
   font-size: 3rem;
   color: #00c4ff;
+  text-align: center;
+  margin-bottom: 4rem;
   text-transform: uppercase;
-  margin-bottom: 1rem;
-  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+  }
 `;
 
-const Subtext = styled.p`
-  font-size: 1.2rem;
-  color: #ccc;
-  max-width: 600px;
-  text-align: center;
-  margin-bottom: 3rem;
-`;
+// Timeline wrapper
+const Timeline = styled.div`
+  position: relative;
+  margin: 0 auto;
+  max-width: 900px;
 
-const IconRow = styled.div`
-  display: flex;
-  gap: 3rem;
-  margin-bottom: 3rem;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 0;
+    height: 100%;
+    border-left: 3px dotted #00c4ff;
+    z-index: 0;
 
-  svg {
-    font-size: 3rem;
-    color: #00c4ff;
-    transition: transform 0.4s ease;
-
-    &:hover {
-      transform: scale(1.3);
+    @media (max-width: 768px) {
+      content: none;
     }
   }
 `;
 
-const PlaceholderCard = styled.div`
-  border: 2px dashed #00c4ff;
-  padding: 2rem;
-  max-width: 500px;
-  text-align: center;
-  border-radius: 16px;
-  background-color: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 0 15px rgba(0, 196, 255, 0.1);
-  transition: box-shadow 0.3s ease;
+// Mobile layout wrapper
+const MobileWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+`;
 
-  &:hover {
-    box-shadow: 0 0 30px rgba(0, 196, 255, 0.3);
+// Timeline Node
+const TimelineNode = styled.div`
+  position: relative;
+  margin-bottom: 4rem;
+  padding-left: 80px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    background: #00c4ff;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      content: none;
+    }
   }
 
+  @media (max-width: 768px) {
+    padding-left: 0;
+  }
+`;
+
+// Fade-in animation wrapper
+const FadeIn = styled.div`
+  animation: fadeInUp 0.7s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+// Experience Card
+const Card = styled.div`
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 15px;
+  border-left: 5px solid #00c4ff;
+  box-shadow: 0 0 10px rgba(0, 196, 255, 0.2);
+
   h3 {
+    font-size: 1.5rem;
     color: #00c4ff;
+    margin-bottom: 0.5rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+    color: #aaa;
     margin-bottom: 1rem;
   }
 
   p {
     color: #ccc;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+    h3 {
+      font-size: 1.2rem;
+    }
+    h4 {
+      font-size: 0.9rem;
+    }
+    p {
+      font-size: 0.9rem;
+    }
   }
 `;
+
+// Project Card
+const ProjectCard = styled.div`
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.8rem;
+  border-radius: 10px;
+  border-left: 4px solid #00ffd0;
+
+  h5 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ffd0;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  span {
+    font-size: 0.85rem;
+    color: #bbb;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.7rem;
+    h5 {
+      font-size: 0.95rem;
+    }
+    span {
+      font-size: 0.8rem;
+    }
+  }
+`;
+
+// Freelancing Card
+const FreelanceCard = styled(Card)`
+  border-left: 5px solid #00ffd0;
+  background: rgba(0, 255, 208, 0.04);
+`;
+
+// Badge styling
+const badgeStyle = {
+  border: "1px solid #00ffd0",
+  borderRadius: "20px",
+  padding: "0.4rem 0.8rem",
+  fontSize: "0.85rem",
+  color: "#00ffd0",
+  background: "rgba(0, 255, 208, 0.08)",
+  marginBottom: "6px",
+};
 
 const Experience = () => {
   return (
     <ExperienceSection id="experience">
-      <Heading>Experience: A Journey in Progress</Heading>
-      <Subtext>
-        Though I may not have formal experience yet, I'm constantly learning, building, and preparing to create meaningful impact.
-      </Subtext>
+      <SectionTitle>Experience</SectionTitle>
+      <Timeline>
+        <MobileWrapper>
+          {/* Internship Node */}
+          <TimelineNode>
+            <FadeIn>
+              <Card>
+                <h3>Data & Analytics Intern</h3>
+                <h4>KANINI Software Solutions — May 2025</h4>
+                <p>
+                  I explored AI and Data Science by building real-world projects
+                  using Python, ML, DL, LLMs, GenAI, and Streamlit.
+                </p>
+                <ProjectCard>
+                  <h5><FaProjectDiagram /> Skill Gap Detector</h5>
+                  <span>
+                    Analyzes LinkedIn profiles and compares with top job roles
+                    to identify skill gaps using ML.
+                  </span>
+                </ProjectCard>
+                <ProjectCard>
+                  <h5><FaProjectDiagram /> Skin Cancer Detection</h5>
+                  <span>
+                    Deep learning model using CNNs trained on HAM10000 to
+                    classify skin cancer types.
+                  </span>
+                </ProjectCard>
+                <ProjectCard>
+                  <h5><FaProjectDiagram /> Audio PII Masker AI</h5>
+                  <span>
+                    Used Whisper & LLMs to transcribe and mask sensitive audio
+                    data with a Streamlit UI.
+                  </span>
+                </ProjectCard>
+              </Card>
+            </FadeIn>
+          </TimelineNode>
 
-      <IconRow>
-        <FaUserGraduate title="Learning Every Day" />
-        <FaLaptopCode title="Building Projects" />
-        <FaRocket title="Ready to Launch" />
-      </IconRow>
-
-      <PlaceholderCard>
-        <h3>Coming Soon...</h3>
-        <p>Stay tuned — my professional experience and achievements will be featured here shortly!</p>
-      </PlaceholderCard>
+          {/* Freelancing Node */}
+          <TimelineNode>
+            <FadeIn>
+              <FreelanceCard>
+                <h3>Open to Freelancing</h3>
+                <p>
+                  Always excited to work on impactful freelance projects in AI,
+                  Data Science, Full-Stack Dev, and more!
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "0.5rem",
+                    marginTop: "0.8rem",
+                  }}
+                >
+                  <span style={badgeStyle}>AI Solutions</span>
+                  <span style={badgeStyle}>GenAI</span>
+                  <span style={badgeStyle}>ML/DL</span>
+                  <span style={badgeStyle}>LLMs</span>
+                  <span style={badgeStyle}>Dashboards</span>
+                  <span style={badgeStyle}>Python</span>
+                  <span style={badgeStyle}>Streamlit</span>
+                  <span style={badgeStyle}>Data Analysis</span>
+                  <span style={badgeStyle}>App or Web Development</span>
+                </div>
+                <a
+                  href="mailto:shaheenur2005@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "1rem",
+                    color: "#00ffd0",
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Let’s collaborate →
+                </a>
+              </FreelanceCard>
+            </FadeIn>
+          </TimelineNode>
+        </MobileWrapper>
+      </Timeline>
     </ExperienceSection>
   );
 };
 
 export default Experience;
-
-
-// import React from "react";
-// import styled from "styled-components";
-// import { motion } from "framer-motion";
-
-// // Section Styling
-// const ExperienceSection = styled.section`
-//   min-height: 80vh;
-//   width: 100%;
-//   padding: 8rem 2rem 4rem; /* Top padding accounts for navbar */
-//   background: #1a1a1a;
-//   color: #f0f0f0;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   scroll-margin-top: 80px; /* 👈 This is important for anchor scrolling */
-// `;
-
-
-// // Title
-// const SectionTitle = styled.h2`
-//   font-size: 3.5rem;
-//   color: #00c4ff;
-//   font-weight: bold;
-//   margin-bottom: 3rem;
-//   text-align: center;
-//   text-transform: uppercase;
-
-//   @media (max-width: 768px) {
-//     font-size: 2.5rem;
-//   }
-// `;
-
-// // Experience Card Container
-// const ExperienceCard = styled(motion.div)`
-//   background: rgba(255, 255, 255, 0.05);
-//   border: 1px solid #00c4ff44;
-//   border-radius: 20px;
-//   padding: 2rem;
-//   margin-bottom: 2rem;
-//   width: 90%;
-//   max-width: 800px;
-//   box-shadow: 0 0 20px rgba(0, 196, 255, 0.2);
-//   transition: 0.3s ease;
-
-//   &:hover {
-//     transform: scale(1.02);
-//     box-shadow: 0 0 30px rgba(0, 196, 255, 0.4);
-//   }
-
-//   h3 {
-//     font-size: 1.8rem;
-//     color: #00c4ff;
-//     margin-bottom: 0.5rem;
-//   }
-
-//   h4 {
-//     font-size: 1.2rem;
-//     color: #aaa;
-//     margin-bottom: 1rem;
-//   }
-
-//   p {
-//     font-size: 1rem;
-//     color: #ddd;
-//     line-height: 1.6;
-//   }
-// `;
-
-// const Experience = () => {
-//   return (
-//     <ExperienceSection id="experience">
-//       <SectionTitle>Experience</SectionTitle>
-
-//       <ExperienceCard
-//         initial={{ opacity: 0, y: 40 }}
-//         whileInView={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.6 }}
-//       >
-//         <h3>Frontend Developer Intern</h3>
-//         <h4>Personal Portfolio Project • Jan 2025 – Present</h4>
-//         <p>
-//           Designed and developed a full-featured portfolio website using React, Styled Components, and Framer Motion.
-//           Integrated 3D visuals with @react-three/fiber, created reusable components, and implemented responsive layouts.
-//           This project showcases my understanding of frontend technologies and user interface design.
-//         </p>
-//       </ExperienceCard>
-
-//       <ExperienceCard
-//         initial={{ opacity: 0, y: 40 }}
-//         whileInView={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.6, delay: 0.2 }}
-//       >
-//         <h3>Open Source Contributor</h3>
-//         <h4>GitHub Projects • Ongoing</h4>
-//         <p>
-//           Actively exploring open-source repositories and contributing through bug fixes and improvements. This has helped
-//           me understand collaborative development, Git workflows, and maintaining clean, readable code.
-//         </p>
-//       </ExperienceCard>
-//     </ExperienceSection>
-//   );
-// };
-
-// export default Experience;
-

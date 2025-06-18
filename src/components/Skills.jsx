@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { motion } from "framer-motion";
 import { FaPython, FaJava, FaReact, FaCertificate, FaDatabase } from "react-icons/fa";
 import { SiCplusplus } from "react-icons/si";
@@ -59,29 +59,28 @@ const TechStackIcon = styled.div`
   color: #f0f0f0;
 `;
 
-// Certifications Section
+// Carousel Animation
+const scrollAnimation = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+`;
+
+// Carousel Wrapper
+const CertificationsWrapper = styled.div`
+  overflow: hidden;
+  width: 100%;
+  margin-top: 1rem;
+`;
+
+// Certifications Carousel
 const CertificationsContainer = styled.div`
   display: flex;
-  overflow-x: auto;
-  padding: 1rem 0;
   gap: 2rem;
-  max-width: 100%;
-  scrollbar-width: thin;
-  scrollbar-color: #00c4ff transparent;
+  width: fit-content;
+  animation: ${scrollAnimation} 30s linear infinite;
 
-  /* Remove vertical scrollbar */
-  overflow-y: hidden;
-
-  /* Custom scrollbar for WebKit browsers */
-  &::-webkit-scrollbar {
-    height: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #00c4ff;
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
+  &:hover {
+    animation-play-state: paused;
   }
 `;
 
@@ -132,9 +131,8 @@ const Skills = () => {
     "AI Fundamentals",
     "Foundations of Cybersecurity",
     "Career Essentials in Generative AI",
-    // "Machine Learning Essentials",
-    // "Cloud Computing Essentials",
-    // "Deep Learning with TensorFlow",
+    "Machine Learning Essentials",
+    "Microsoft Azure Fundamentals",
   ];
 
   return (
@@ -195,19 +193,21 @@ const Skills = () => {
           </TechStackIcon>
         </TechStackIconContainer>
         <TechStackIconContainer
-        title="SQL"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        viewport={{ once: true }}
-      >
-        <TechStackIcon>
-          <FaDatabase />
-        </TechStackIcon>
-      </TechStackIconContainer>
+          title="SQL"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <TechStackIcon>
+            <FaDatabase />
+          </TechStackIcon>
+        </TechStackIconContainer>
       </TechStackContainer>
+
       <br />
       <br />
+
       {/* Certifications Section */}
       <SectionTitle
         initial={{ opacity: 0 }}
@@ -218,22 +218,24 @@ const Skills = () => {
         Certifications
       </SectionTitle>
 
-      <CertificationsContainer>
-        {certifications.map((cert, index) => (
-          <CertificationCard
-            key={index}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            viewport={{ once: true }}
-          >
-            <CertificateIcon>
-              <FaCertificate />
-            </CertificateIcon>
-            <CertificationName>{cert}</CertificationName>
-          </CertificationCard>
-        ))}
-      </CertificationsContainer>
+      <CertificationsWrapper>
+        <CertificationsContainer>
+          {[...certifications, ...certifications].map((cert, index) => (
+            <CertificationCard
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <CertificateIcon>
+                <FaCertificate />
+              </CertificateIcon>
+              <CertificationName>{cert}</CertificationName>
+            </CertificationCard>
+          ))}
+        </CertificationsContainer>
+      </CertificationsWrapper>
     </Section>
   );
 };
