@@ -1,3 +1,179 @@
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
+import { motion } from "framer-motion";
+import "@fontsource/playfair-display";
+
+// Hero Section Wrapper
+const HeroSection = styled.section`
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(to right, #14142b, #0f0f2d);
+  overflow: hidden;
+`;
+
+// Text + Buttons container
+const HeroContent = styled(motion.div)`
+  position: absolute;
+  text-align: center;
+  z-index: 2;
+  color: #fff;
+  max-width: 700px;
+  padding: 1rem;
+
+  h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: #00c4ff;
+    margin-bottom: 0.8rem;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    color: #fff;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #d3d3d3;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2.4rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 0.95rem;
+    }
+  }
+  `;
+
+// Button Group (flex layout)
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  `;
+
+// Reusable CTA Button
+const CTAButton = styled(motion.button)`
+  padding: 0.9rem 2rem;
+  background: #00c4ff;
+  color: #121212;
+  font-size: 1.05rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 196, 255, 0.3);
+  
+  &:hover {
+    background: #009ac7;
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 196, 255, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    padding: 0.8rem 1.6rem;
+  }
+  `;
+
+const Hero = ({ isMobile, setCurrentPage }) => {
+  const [mobile, setMobile] = useState(window.innerWidth < 768);
+  
+  useEffect(() => {
+    const handleResize = () => setMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 🔹 Handles CTA action (scroll for mobile, navigate for desktop)
+  const handleCTA = () => {
+    if (mobile) {
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      setCurrentPage("/about");
+    }
+  };
+
+  return (
+    <HeroSection id="home">
+      {/* 3D Background Sphere */}
+      <Canvas style={{ width: "100%", height: "100%", touchAction: "none" }}>
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[2, 5, 2]} />
+        <Sphere args={[1, 32, 32]} scale={2}>
+          <MeshDistortMaterial
+            color="#00c4ff"
+            distort={0.5}
+            speed={mobile ? 1 : 2}
+          />
+        </Sphere>
+        {!mobile && <OrbitControls enableZoom={false} />}
+      </Canvas>
+
+      {/* Hero Text + Buttons */}
+      <HeroContent
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        <h1>Shaheenur Rahman M</h1>
+        <h2>AI & Data Science Enthusiast</h2>
+        <p>
+          Exploring the intersection of AI & Data Science to build
+          intelligent and impactful solutions.
+        </p>
+
+        <ButtonGroup>
+          <CTAButton
+            onClick={handleCTA}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            Know More About Me
+          </CTAButton>
+
+          <CTAButton
+            as="a"
+            href="/Shaheenur_Rahman.M_Resume.pdf"
+            download
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+          >
+            Download Resume
+          </CTAButton>
+        </ButtonGroup>
+      </HeroContent>
+    </HeroSection>
+  );
+};
+
+export default Hero;
+
+
+
 // import React, { useState, useEffect } from "react";
 // import styled from "styled-components";
 // import { Canvas } from "@react-three/fiber";
@@ -237,177 +413,3 @@
 // };
 
 // export default Hero;
-
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
-import { motion } from "framer-motion";
-import "@fontsource/playfair-display";
-
-// 🔹 Hero Section Wrapper
-const HeroSection = styled.section`
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  background: linear-gradient(to right, #14142b, #0f0f2d);
-  overflow: hidden;
-`;
-
-// 🔹 Text + Buttons container
-const HeroContent = styled(motion.div)`
-  position: absolute;
-  text-align: center;
-  z-index: 2;
-  color: #fff;
-  max-width: 700px;
-  padding: 1rem;
-
-  h1 {
-    font-family: "Playfair Display", serif;
-    font-size: 4rem;
-    font-weight: 700;
-    color: #00c4ff;
-    margin-bottom: 0.8rem;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 1.2rem;
-    color: #fff;
-  }
-
-  p {
-    font-size: 1.2rem;
-    color: #d3d3d3;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-  }
-
-  @media (max-width: 768px) {
-    h1 {
-      font-size: 2.4rem;
-    }
-    h2 {
-      font-size: 1.2rem;
-    }
-    p {
-      font-size: 0.95rem;
-    }
-  }
-`;
-
-// 🔹 Button Group (flex layout)
-const ButtonGroup = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-
-// 🔹 Reusable CTA Button
-const CTAButton = styled(motion.button)`
-  padding: 0.9rem 2rem;
-  background: #00c4ff;
-  color: #121212;
-  font-size: 1.05rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 196, 255, 0.3);
-
-  &:hover {
-    background: #009ac7;
-    color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0, 196, 255, 0.5);
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-    padding: 0.8rem 1.6rem;
-  }
-`;
-
-const Hero = ({ isMobile, setCurrentPage }) => {
-  const [mobile, setMobile] = useState(window.innerWidth < 768);
-
-  useEffect(() => {
-    const handleResize = () => setMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  // 🔹 Handles CTA action (scroll for mobile, navigate for desktop)
-  const handleCTA = () => {
-    if (mobile) {
-      const aboutSection = document.getElementById("about");
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      setCurrentPage("/about");
-    }
-  };
-
-  return (
-    <HeroSection id="home">
-      {/* 3D Background Sphere */}
-      <Canvas style={{ width: "100%", height: "100%", touchAction: "none" }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[2, 5, 2]} />
-        <Sphere args={[1, 32, 32]} scale={2}>
-          <MeshDistortMaterial
-            color="#00c4ff"
-            distort={0.5}
-            speed={mobile ? 1 : 2}
-          />
-        </Sphere>
-        {!mobile && <OrbitControls enableZoom={false} />}
-      </Canvas>
-
-      {/* Hero Text + Buttons */}
-      <HeroContent
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <h1>Shaheenur Rahman M</h1>
-        <h2>AI & Data Science Enthusiast</h2>
-        <p>
-          Exploring the intersection of AI & Data Science to build
-          intelligent and impactful solutions.
-        </p>
-
-        <ButtonGroup>
-          <CTAButton
-            onClick={handleCTA}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            Know More About Me
-          </CTAButton>
-
-          <CTAButton
-            as="a"
-            href="/Shaheenur_Rahman.M_Resume.pdf"
-            download
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            Download Resume
-          </CTAButton>
-        </ButtonGroup>
-      </HeroContent>
-    </HeroSection>
-  );
-};
-
-export default Hero;
