@@ -7,14 +7,15 @@ import "@fontsource/playfair-display";
 
 // Hero Section Wrapper
 const HeroSection = styled.section`
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100dvw;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   background: linear-gradient(to right, #14142b, #0f0f2d);
-  overflow: hidden;
+  overflow-x: hidden;       
+  overflow-y: hidden;
 `;
 
 // Text + Buttons container
@@ -23,6 +24,7 @@ const HeroContent = styled(motion.div)`
   text-align: center;
   z-index: 2;
   color: #fff;
+  width: 100%;
   max-width: 700px;
   padding: 1rem;
 
@@ -49,6 +51,9 @@ const HeroContent = styled(motion.div)`
   }
   
   @media (max-width: 768px) {
+    width: 100vw;
+    max-width: none;
+    padding: 0.5rem;
     h1 {
       font-size: 2.4rem;
     }
@@ -105,7 +110,7 @@ const Hero = ({ isMobile, setCurrentPage }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🔹 Handles CTA action (scroll for mobile, navigate for desktop)
+  // Handles CTA action (scroll for mobile, navigate for desktop)
   const handleCTA = () => {
     if (mobile) {
       const aboutSection = document.getElementById("about");
@@ -120,6 +125,7 @@ const Hero = ({ isMobile, setCurrentPage }) => {
   return (
     <HeroSection id="home">
       {/* 3D Background Sphere */}
+      <div style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "hidden" }}>
       <Canvas style={{ width: "100%", height: "100%", touchAction: "none" }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[2, 5, 2]} />
@@ -132,7 +138,7 @@ const Hero = ({ isMobile, setCurrentPage }) => {
         </Sphere>
         {!mobile && <OrbitControls enableZoom={false} />}
       </Canvas>
-
+    </div>
       {/* Hero Text + Buttons */}
       <HeroContent
         initial={{ opacity: 0, y: 30 }}
