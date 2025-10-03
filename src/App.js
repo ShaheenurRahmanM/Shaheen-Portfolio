@@ -8,6 +8,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import { GlobalStyles } from './styles/GlobalStyles';
 import { useState, useEffect } from 'react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -60,6 +61,7 @@ function App() {
   return (
     <>
       <GlobalStyles />
+      <SpeedInsights/>
       <Navbar 
         isMobile={isMobile} 
         currentPage={currentPage} 
