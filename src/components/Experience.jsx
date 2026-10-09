@@ -1,277 +1,426 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { FaProjectDiagram } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGraduationCap, FaChevronDown, FaChevronUp, FaLaptopCode, FaCalendarAlt, FaBrain } from "react-icons/fa";
 
-// Section Wrapper
-const ExperienceSection = styled.section`
-  background: linear-gradient(135deg, #0f0f2d, #1a1a3a);
-  padding: 15rem 1rem 3rem 1rem;
-  color: #fff;
+const Section = styled.section`
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
+  padding: 85px 8% 30px;
+  background: linear-gradient(180deg, #080a14 0%, #0d1222 50%, #090c17 100%);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  @media (max-width: 992px) {
+    height: auto;
+    min-height: auto;
+    padding: 80px 1.5rem 50px;
+    overflow: visible;
+  }
 `;
 
-// Section Title
-const SectionTitle = styled.h2`
-  font-size: 3rem;
-  color: #00c4ff;
+const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
-  text-transform: uppercase;
+  margin-bottom: 2rem;
 
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
-`;
-
-// Timeline wrapper
-const Timeline = styled.div`
-  position: relative;
-  margin: 0 auto;
-  max-width: 900px;
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 20px;
-    top: 0;
-    height: 100%;
-    border-left: 3px dotted #00c4ff;
-    z-index: 0;
-
-    @media (max-width: 768px) {
-      content: none;
-    }
-  }
-`;
-
-// Mobile layout wrapper
-const MobileWrapper = styled.div`
-  @media (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
-`;
-
-// Timeline Node
-const TimelineNode = styled.div`
-  position: relative;
-  margin-bottom: 4rem;
-  padding-left: 80px;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 12px;
-    width: 16px;
-    height: 16px;
-    background: #00c4ff;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    z-index: 2;
-
-    @media (max-width: 768px) {
-      content: none;
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding-left: 0;
-  }
-`;
-
-// Fade-in animation wrapper
-const FadeIn = styled.div`
-  animation: fadeInUp 0.7s ease forwards;
-  opacity: 0;
-  transform: translateY(30px);
-
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-// Experience Card
-const Card = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem;
-  border-radius: 15px;
-  border-left: 5px solid #00c4ff;
-  box-shadow: 0 0 10px rgba(0, 196, 255, 0.2);
-
-  h3 {
-    font-size: 1.5rem;
-    color: #00c4ff;
-    margin-bottom: 0.5rem;
-  }
-
-  h4 {
-    font-size: 1rem;
-    color: #aaa;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    color: #ccc;
-    line-height: 1.5;
-    font-size: 0.95rem;
-  }
-
-  @media (max-width: 600px) {
-    padding: 1rem;
-    h3 {
-      font-size: 1.2rem;
-    }
-    h4 {
-      font-size: 0.9rem;
-    }
-    p {
-      font-size: 0.9rem;
-    }
-  }
-`;
-
-// Project Card
-const ProjectCard = styled.div`
-  margin-top: 1rem;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 0.8rem;
-  border-radius: 10px;
-  border-left: 4px solid #00ffd0;
-
-  h5 {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .subtitle {
     color: #00ffd0;
-    font-size: 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     margin-bottom: 0.3rem;
   }
 
-  span {
-    font-size: 0.85rem;
-    color: #bbb;
-  }
+  h2 {
+    font-size: clamp(2rem, 3.2vw, 2.8rem);
+    color: #ffffff;
+    font-weight: 800;
 
-  @media (max-width: 600px) {
-    padding: 0.7rem;
-    h5 {
-      font-size: 0.95rem;
-    }
     span {
-      font-size: 0.8rem;
+      background: linear-gradient(135deg, #00c4ff 0%, #00ffd0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   }
 `;
 
-// Freelancing Card
-const FreelanceCard = styled(Card)`
-  border-left: 5px solid #00ffd0;
-  background: rgba(0, 255, 208, 0.04);
+const TimelineContainer = styled.div`
+  position: relative;
+  max-width: 1050px;
+  width: 100%;
+  margin: 0 auto;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, #00c4ff, #7000ff, #00ffd0);
+    box-shadow: 0 0 12px rgba(0, 196, 255, 0.4);
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1.2rem;
+    padding-bottom: 1.2rem;
+    width: 100%;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
-// Badge styling
-const badgeStyle = {
-  border: "1px solid #00ffd0",
-  borderRadius: "20px",
-  padding: "0.4rem 0.8rem",
-  fontSize: "0.85rem",
-  color: "#00ffd0",
-  background: "rgba(0, 255, 208, 0.08)",
-  marginBottom: "6px",
-};
+const TimelineItem = styled(motion.div)`
+  display: flex;
+  justify-content: ${(props) => (props.align === "left" ? "flex-start" : "flex-end")};
+  margin-bottom: 1.5rem;
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 84vw;
+    max-width: 84vw;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    margin-bottom: 0;
+  }
+`;
+
+const TimelineNode = styled.div`
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #090c17;
+  border: 2px solid #00c4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #00c4ff;
+  z-index: 2;
+  box-shadow: 0 0 15px rgba(0, 196, 255, 0.5);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const CardWrapper = styled.div`
+  width: 44%;
+
+  @media (max-width: 900px) {
+    width: calc(100% - 55px);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const ExperienceCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(0, 196, 255, 0.18);
+  border-radius: 18px;
+  padding: 1.2rem 1.6rem;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  .mobile-icon {
+    display: none;
+    font-size: 1.2rem;
+    color: #00c4ff;
+
+    @media (max-width: 768px) {
+      display: inline-flex;
+    }
+  }
+
+  &:hover {
+    border-color: #00c4ff;
+    box-shadow: 0 10px 30px rgba(0, 196, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .role {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .company {
+    font-size: 0.9rem;
+    color: #00c4ff;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: #00ffd0;
+    background: rgba(0, 255, 208, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+  }
+
+  .expand-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    color: #00c4ff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-top: 0.6rem;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .details-content {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    ul {
+      list-style: none;
+      li {
+        position: relative;
+        padding-left: 1.2rem;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 0.82rem;
+        margin-bottom: 0.4rem;
+        line-height: 1.4;
+
+        &::before {
+          content: "•";
+          position: absolute;
+          left: 0;
+          color: #00ffd0;
+        }
+      }
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+
+      span {
+        font-size: 0.72rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(112, 0, 255, 0.2);
+        color: #d1a8ff;
+        border: 1px solid rgba(112, 0, 255, 0.4);
+      }
+    }
+  }
+`;
+
+const experiences = [
+  {
+    id: 1,
+    role: "AI & Data Science Intern",
+    company: "Tech Research Lab",
+    date: "2024 - Present",
+    align: "left",
+    icon: <FaBrain />,
+    summary: "Developing machine learning models and fine-tuning LLMs for predictive intelligence.",
+    details: [
+      "Engineered NLP & Vision solutions using PyTorch and Scikit-learn.",
+      "Fine-tuned Generative AI prompts for domain question answering.",
+      "Optimized model inference time by 40% through weight quantization."
+    ],
+    tech: ["Python", "PyTorch", "Generative AI", "NLP"]
+  },
+  {
+    id: 2,
+    role: "Full-Stack Web Developer",
+    company: "Freelance & Project Labs",
+    date: "2023 - 2024",
+    align: "right",
+    icon: <FaLaptopCode />,
+    summary: "Delivered modern, high-performance web applications with React.js and scalable APIs.",
+    details: [
+      "Built SPAs using styled-components, Framer Motion, and GSAP.",
+      "Integrated REST APIs with secure authentication and database persistence.",
+      "Achieved high performance metrics with optimized assets."
+    ],
+    tech: ["React.js", "JavaScript", "Node.js", "MongoDB"]
+  },
+  {
+    id: 3,
+    role: "B.Tech in AI & Data Science",
+    company: "Engineering University",
+    date: "2022 - 2026",
+    align: "left",
+    icon: <FaGraduationCap />,
+    summary: "Comprehensive academic training in AI, Machine Learning, Data Analytics, and Data Structures.",
+    details: [
+      "Coursework in Data Structures, Deep Learning, DBMS, Applied Math.",
+      "Active participant in technical hackathons and coding challenges."
+    ],
+    tech: ["Python", "Java", "C++", "SQL", "Data Structures"]
+  }
+];
 
 const Experience = () => {
-  return (
-    <ExperienceSection id="experience">
-      <SectionTitle>Experience</SectionTitle>
-      <Timeline>
-        <MobileWrapper>
-          {/* Internship Node */}
-          <TimelineNode>
-            <FadeIn>
-              <Card>
-                <h3>Data & Analytics Intern</h3>
-                <h4>KANINI Software Solutions — May 2025</h4>
-                <p>
-                  I explored AI and Data Science by building real-world projects
-                  using Python, ML, DL, LLMs, GenAI, and Streamlit.
-                </p>
-                <ProjectCard>
-                  <h5><FaProjectDiagram /> Skill Gap Detector</h5>
-                  <span>
-                    Analyzes LinkedIn profiles and compares with top job roles
-                    to identify skill gaps using ML.
-                  </span>
-                </ProjectCard>
-                <ProjectCard>
-                  <h5><FaProjectDiagram /> Skin Cancer Detection</h5>
-                  <span>
-                    Deep learning model using CNNs trained on HAM10000 to
-                    classify skin cancer types.
-                  </span>
-                </ProjectCard>
-                <ProjectCard>
-                  <h5><FaProjectDiagram /> Audio PII Masker AI</h5>
-                  <span>
-                    Used Whisper & LLMs to transcribe and mask sensitive audio
-                    data with a Streamlit UI.
-                  </span>
-                </ProjectCard>
-              </Card>
-            </FadeIn>
-          </TimelineNode>
+  const [expandedId, setExpandedId] = useState(null);
+  const expScrollRef = useRef(null);
 
-          {/* Freelancing Node */}
-          <TimelineNode>
-            <FadeIn>
-              <FreelanceCard>
-                <h3>Open to Freelancing</h3>
-                <p>
-                  Always excited to work on impactful freelance projects in AI,
-                  Data Science, Full-Stack Dev, and more!
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "0.5rem",
-                    marginTop: "0.8rem",
-                  }}
-                >
-                  <span style={badgeStyle}>AI Solutions</span>
-                  <span style={badgeStyle}>GenAI</span>
-                  <span style={badgeStyle}>ML/DL</span>
-                  <span style={badgeStyle}>LLMs</span>
-                  <span style={badgeStyle}>Dashboards</span>
-                  <span style={badgeStyle}>Python</span>
-                  <span style={badgeStyle}>Streamlit</span>
-                  <span style={badgeStyle}>Data Analysis</span>
-                  <span style={badgeStyle}>App or Web Development</span>
+  const toggleExpand = (id) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  };
+
+  useEffect(() => {
+    const container = expScrollRef.current;
+    if (!container || window.innerWidth > 768) return;
+
+    let isPaused = false;
+    const onTouchStart = () => { isPaused = true; };
+    const onTouchEnd = () => {
+      setTimeout(() => { isPaused = false; }, 2500);
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    const interval = setInterval(() => {
+      if (isPaused || !container) return;
+      const cardWidth = container.firstElementChild?.offsetWidth || 300;
+      const gap = 19;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      let nextScroll = container.scrollLeft + cardWidth + gap;
+
+      if (nextScroll >= maxScroll - 15) {
+        nextScroll = 0;
+      }
+
+      container.scrollTo({
+        left: nextScroll,
+        behavior: "smooth",
+      });
+    }, 3400);
+
+    return () => {
+      clearInterval(interval);
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
+
+  return (
+    <Section id="experience">
+      <SectionHeader>
+        <div className="subtitle">Career & Academics</div>
+        <h2>
+          Experience & <span>Education</span>
+        </h2>
+      </SectionHeader>
+
+      <TimelineContainer ref={expScrollRef}>
+        {experiences.map((exp) => (
+          <TimelineItem key={exp.id} align={exp.align}>
+            <TimelineNode>{exp.icon}</TimelineNode>
+            <CardWrapper>
+              <ExperienceCard
+                onClick={() => toggleExpand(exp.id)}
+                whileHover={{ scale: 1.01 }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "0.5rem" }}>
+                  <div>
+                    <h3 className="role">{exp.role}</h3>
+                    <div className="company">{exp.company}</div>
+                  </div>
+                  <span className="mobile-icon">{exp.icon}</span>
                 </div>
-                <a
-                  href="mailto:shaheenur2005@gmail.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-block",
-                    marginTop: "1rem",
-                    color: "#00ffd0",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Let’s collaborate →
-                </a>
-              </FreelanceCard>
-            </FadeIn>
-          </TimelineNode>
-        </MobileWrapper>
-      </Timeline>
-    </ExperienceSection>
+
+                <div className="date">
+                  <FaCalendarAlt /> {exp.date}
+                </div>
+
+                <p className="description">{exp.summary}</p>
+
+                <button className="expand-btn">
+                  {expandedId === exp.id ? (
+                    <>Hide Details <FaChevronUp /></>
+                  ) : (
+                    <>View Highlights <FaChevronDown /></>
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {expandedId === exp.id && (
+                    <motion.div
+                      className="details-content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <ul>
+                        {exp.details.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
+
+                      <div className="tech-stack">
+                        {exp.tech.map((t) => (
+                          <span key={t}>{t}</span>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </ExperienceCard>
+            </CardWrapper>
+          </TimelineItem>
+        ))}
+      </TimelineContainer>
+    </Section>
   );
 };
 

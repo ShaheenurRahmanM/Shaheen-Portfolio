@@ -1,421 +1,324 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
 import { motion } from "framer-motion";
+import { FaDownload, FaRocket } from "react-icons/fa";
+import Hero3DCanvas from "./Hero3DCanvas";
 import "@fontsource/playfair-display";
+import "@fontsource/montserrat";
 
-// Hero Section Wrapper
 const HeroSection = styled.section`
-  height: 100dvh;
-  width: 100dvw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
   position: relative;
-  background: linear-gradient(to right, #14142b, #0f0f2d);
-  overflow-x: hidden;       
-  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 8% 40px;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 196, 255, 0.1), transparent 60%),
+              radial-gradient(circle at 85% 70%, rgba(112, 0, 255, 0.08), transparent 45%),
+              linear-gradient(135deg, #090c17 0%, #0d1222 50%, #080a14 100%);
+  overflow: hidden;
+  box-sizing: border-box;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 992px) {
+    height: auto;
+    min-height: auto;
+    padding: 110px 1.5rem 60px;
+    overflow: visible;
+  }
 `;
 
-// Text + Buttons container
-const HeroContent = styled(motion.div)`
+const FullPage3DBackground = styled.div`
   position: absolute;
-  text-align: center;
-  z-index: 2;
-  color: #fff;
+  inset: 0;
   width: 100%;
-  max-width: 700px;
-  padding: 1rem;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.75;
+  overflow: hidden;
+
+  @media (max-width: 992px) {
+    opacity: 0.55;
+  }
+`;
+
+const HeroContent = styled.div`
+  position: relative;
+  z-index: 2;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1.3rem;
+    border-radius: 999px;
+    background: rgba(10, 14, 26, 0.7);
+    border: 1px solid rgba(0, 196, 255, 0.35);
+    color: #00c4ff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 196, 255, 0.18);
+  }
 
   h1 {
     font-family: "Playfair Display", serif;
-    font-size: 4rem;
-    font-weight: 700;
-    color: #00c4ff;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    line-height: 1.12;
+    font-weight: 800;
     margin-bottom: 0.8rem;
+    color: #ffffff;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+
+    span {
+      background: linear-gradient(135deg, #ffffff 0%, #00c4ff 60%, #00ffd0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
   }
-  
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 400;
-    margin-bottom: 1.2rem;
-    color: #fff;
+
+  .role-subtitle {
+    font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+    color: #00c4ff;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+    min-height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
   }
 
   p {
-    font-size: 1.2rem;
-    color: #d3d3d3;
+    font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.75;
     margin-bottom: 2rem;
-    line-height: 1.6;
+    max-width: 680px;
+    text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
   }
-  
-  @media (max-width: 768px) {
-    width: 100vw;
-    max-width: none;
-    padding: 0.5rem;
-    h1 {
-      font-size: 2.4rem;
-    }
-    h2 {
-      font-size: 1.2rem;
-    }
-    p {
-      font-size: 0.95rem;
-    }
-  }
-  `;
+`;
 
-// Button Group (flex layout)
 const ButtonGroup = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  gap: 1.2rem;
   flex-wrap: wrap;
-  `;
+  justify-content: center;
+`;
 
-// Reusable CTA Button
-const CTAButton = styled(motion.button)`
+const PrimaryCTA = styled(motion.button)`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   padding: 0.9rem 2rem;
-  background: #00c4ff;
-  color: #121212;
-  font-size: 1.05rem;
-  font-weight: bold;
   border: none;
-  border-radius: 30px;
+  border-radius: 50px;
   cursor: pointer;
-  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #080a14;
+  background: linear-gradient(135deg, #00c4ff 0%, #00ffd0 100%);
+  box-shadow: 0 8px 25px rgba(0, 196, 255, 0.4);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 196, 255, 0.3);
-  
+
   &:hover {
-    background: #009ac7;
-    color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0, 196, 255, 0.5);
+    box-shadow: 0 12px 32px rgba(0, 196, 255, 0.65);
+    transform: translateY(-2px);
+  }
+`;
+
+const SecondaryCTA = styled(motion.a)`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.9rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(10, 14, 26, 0.65);
+  border: 1px solid rgba(0, 196, 255, 0.35);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(0, 196, 255, 0.15);
+    border-color: #00c4ff;
+    color: #00c4ff;
+    transform: translateY(-2px);
+  }
+`;
+
+const StatsGrid = styled.div`
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 2.2rem;
+  justify-content: center;
+
+  @media (max-width: 600px) {
+    gap: 1.4rem;
+  }
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #00c4ff;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 0 14px rgba(0, 196, 255, 0.5);
   }
 
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-    padding: 0.8rem 1.6rem;
+  .stat-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    letter-spacing: 0.5px;
   }
-  `;
+`;
 
-const Hero = ({ isMobile, setCurrentPage }) => {
-  const [mobile, setMobile] = useState(window.innerWidth < 768);
-  
+const roles = [
+  "AI & Data Science Engineer",
+  "Generative AI Specialist",
+  "Full Stack Developer",
+  "Machine Learning Engineer",
+];
+
+const Hero = ({ scrollToSection }) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayedRole, setDisplayedRole] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
   useEffect(() => {
-    const handleResize = () => setMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 992);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Handles CTA action (scroll for mobile, navigate for desktop)
+  useEffect(() => {
+    const currentFullRole = roles[roleIndex];
+    let timer;
+
+    if (!isDeleting && displayedRole !== currentFullRole) {
+      timer = setTimeout(() => {
+        setDisplayedRole(currentFullRole.slice(0, displayedRole.length + 1));
+      }, 75);
+    } else if (!isDeleting && displayedRole === currentFullRole) {
+      timer = setTimeout(() => setIsDeleting(true), 2200);
+    } else if (isDeleting && displayedRole !== "") {
+      timer = setTimeout(() => {
+        setDisplayedRole(currentFullRole.slice(0, displayedRole.length - 1));
+      }, 40);
+    } else if (isDeleting && displayedRole === "") {
+      setIsDeleting(false);
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }
+
+    return () => clearTimeout(timer);
+  }, [displayedRole, isDeleting, roleIndex]);
+
   const handleCTA = () => {
-    if (mobile) {
-      const aboutSection = document.getElementById("about");
-      if (aboutSection) {
-        aboutSection.scrollIntoView({ behavior: "smooth" });
-      }
+    if (scrollToSection) {
+      scrollToSection("projects");
     } else {
-      setCurrentPage("/about");
+      document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
     <HeroSection id="home">
-      {/* 3D Background Sphere */}
-      <div style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "hidden" }}>
-      <Canvas style={{ width: "100%", height: "100%", touchAction: "none" }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[2, 5, 2]} />
-        <Sphere args={[1, 32, 32]} scale={2}>
-          <MeshDistortMaterial
-            color="#00c4ff"
-            distort={0.5}
-            speed={mobile ? 1 : 2}
-          />
-        </Sphere>
-        {!mobile && <OrbitControls enableZoom={false} />}
-      </Canvas>
-    </div>
-      {/* Hero Text + Buttons */}
-      <HeroContent
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <h1>Shaheenur Rahman M</h1>
-        <h2>AI & Data Science Enthusiast</h2>
+      {/* Full-Page 3D Background covering the entire page */}
+      <FullPage3DBackground>
+        <Hero3DCanvas isMobile={isMobile} />
+      </FullPage3DBackground>
+
+      <HeroContent>
+        <div className="badge">
+          Shaheenur Rahman M
+        </div>
+
+        <h1>
+          Building AI Solutions <br />
+          <span>That Create Impact</span>
+        </h1>
+
+        <div className="role-subtitle">
+          {displayedRole}
+          <span style={{ animation: "blink 1s infinite", color: "#00c4ff" }}>|</span>
+        </div>
+
         <p>
-          Exploring the intersection of AI & Data Science to build
-          intelligent and impactful solutions.
+          Passionate AI & Data Science Engineer focused on Machine Learning, Deep Learning,
+          Generative AI, Full Stack Development, and building intelligent software solutions that solve real-world challenges.
         </p>
 
         <ButtonGroup>
-          <CTAButton
-            onClick={handleCTA}
-            whileTap={{ scale: 0.95 }}
+          <PrimaryCTA
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleCTA}
           >
-            Know More About Me
-          </CTAButton>
+            Explore My Work <FaRocket />
+          </PrimaryCTA>
 
-          <CTAButton
-            as="a"
+          <SecondaryCTA
             href="/Shaheenur_Rahman.M_Resume.pdf"
             download
-            whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
           >
-            Download Resume
-          </CTAButton>
+            Download Resume <FaDownload />
+          </SecondaryCTA>
         </ButtonGroup>
+
+        <StatsGrid>
+          <StatItem>
+            <span className="stat-number">15+</span>
+            <span className="stat-label">Projects Completed</span>
+          </StatItem>
+          <StatItem>
+            <span className="stat-number">3+</span>
+            <span className="stat-label">AI Systems</span>
+          </StatItem>
+          <StatItem>
+            <span className="stat-number">2+</span>
+            <span className="stat-label">Years Expertise</span>
+          </StatItem>
+        </StatsGrid>
       </HeroContent>
     </HeroSection>
   );
 };
 
 export default Hero;
-
-
-
-// import React, { useState, useEffect } from "react";
-// import styled from "styled-components";
-// import { Canvas } from "@react-three/fiber";
-// import { OrbitControls, Sphere, MeshDistortMaterial } from "@react-three/drei";
-// import { motion } from "framer-motion";
-// import "@fontsource/playfair-display";
-
-// // Hero Section Style
-// const HeroSection = styled.div`
-//   height: 100vh;
-//   width: 100vw;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   position: relative;
-//   background: linear-gradient(to right, #14142b, #0f0f2d);
-//   overflow: hidden;
-// `;
-
-// // Hero Content Styling
-// const HeroContent = styled(motion.div)`
-//   position: absolute;
-//   text-align: center;
-//   z-index: 2;
-//   color: #fff;
-
-//   // h1 {
-//   //   font-size: 4rem;
-//   //   color: #00c4ff;
-//   //   margin-bottom: 1rem;
-//   //   animation: fadeIn 2s;
-//   // }
-
-//   h1 {
-//   font-family: 'Playfair Display', sans-serif;
-//   font-size: 4rem;
-//   font-weight: 700;
-//   // background: linear-gradient(90deg, #00c4ff, #00ffd0);
-//   // -webkit-background-clip: text;
-//   // -webkit-text-fill-color: transparent;
-//   // text-shadow: 0 0 10px rgba(0, 196, 255, 0.3);
-//   // background-size: 200% auto;
-//   // animation: shimmer 3s linear infinite, fadeIn 2s;
-//   color: #00c4ff; // Removed gradient effect
-//     animation: fadeIn 2s; // Simple fade-in animation
-// }
-
-
-//   h2 {
-//     font-size: 2rem;
-//     color: #fff;
-//     margin-top: 1rem;
-//     animation: fadeIn 3s;
-//     font-weight: 400;
-//   }
-
-//   p {
-//     font-size: 1.2rem;
-//     color: #d3d3d3;
-//     margin-top: 1rem;
-//     animation: fadeIn 4s;
-//   }
-
-//   @keyframes fadeIn {
-//     from {
-//       opacity: 0;
-//       transform: translateY(20px);
-//     }
-//     to {
-//       opacity: 1;
-//       transform: translateY(0);
-//     }
-//   }
-
-//   @keyframes shimmer {
-//   0% {
-//     background-position: -500px 0;
-//   }
-//   100% {
-//     background-position: 500px 0;
-//   }
-// }
-
-//   @media (max-width: 1024px) {
-//     h1 {
-//       font-size: 3rem;
-//     }
-//     h2 {
-//       font-size: 1.5rem;
-//     }
-//     p {
-//       font-size: 1rem;
-//     }
-//   }
-
-//   @media (max-width: 768px) {
-//     h1 {
-//       font-size: 2.5rem;
-//     }
-//     h2 {
-//       font-size: 1.2rem;
-//     }
-//     p {
-//       font-size: 0.9rem;
-//     }
-//   }
-
-//   @media (max-width: 480px) {
-//     h1 {
-//       font-size: 2rem;
-//     }
-//     h2 {
-//       font-size: 1rem;
-//     }
-//     p {
-//       font-size: 0.8rem;
-//     }
-//   }
-// `;
-
-// const ScrollIndicator = styled(motion.div)`
-//   position: absolute;
-//   bottom: 40px; /* Set the distance from the bottom */
-//   left: 50%;
-//   transform: translateX(-50%);
-//   cursor: pointer;
-//   z-index: 5;
-//   display: none; /* Hide by default */
-
-//   /* Only show on mobile */
-//   @media (max-width: 768px) {
-//     display: flex;
-//     flex-direction: column;
-//     align-items: center;
-//     gap: 8px;
-//   }
-
-//   .scroll-text {
-//     color: #00c4ff;
-//     font-size: 0.8rem;
-//     text-transform: uppercase;
-//     letter-spacing: 2px;
-//   }
-
-//   .arrow-container {
-//     background: rgba(0, 196, 255, 0.1);
-//     border: 1px solid #00c4ff;
-//     border-radius: 50%;
-//     padding: 8px;
-//     width: 40px;
-//     height: 40px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     transition: all 0.3s ease;
-//   }
-
-//   &:hover .arrow-container {
-//     background: rgba(0, 196, 255, 0.2);
-//     transform: translateY(-2px);
-//   }
-
-//   .arrow {
-//     width: 0;
-//     height: 0;
-//     border-left: 8px solid transparent;
-//     border-right: 8px solid transparent;
-//     border-top: 8px solid #00c4ff;
-//   }
-// `;
-
-// const Hero = () => {
-//   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-//   useEffect(() => {
-//     const handleResize = () => {
-//       setIsMobile(window.innerWidth < 768);
-//     };
-
-//     window.addEventListener('resize', handleResize);
-//     return () => window.removeEventListener('resize', handleResize);
-//   }, []);
-
-//   const scrollToAbout = () => {
-//     const aboutSection = document.getElementById('about');
-//     if (aboutSection) {
-//       aboutSection.scrollIntoView({ behavior: 'smooth' });
-//     }
-//   };
-
-//   return (
-//     <HeroSection id="hero">
-//       <Canvas style={{ width: "100%", height: "100%", touchAction: "none" }}>
-//         <ambientLight intensity={0.5} />
-//         <directionalLight position={[2, 5, 2]} />
-//         <Sphere visible args={[1, 32, 32]} scale={2}>
-//           <MeshDistortMaterial 
-//             color="#00c4ff" 
-//             attach="material" 
-//             distort={0.5} 
-//             speed={isMobile ? 1 : 2}
-//           />
-//         </Sphere>
-//         {!isMobile && <OrbitControls enableZoom={false} />}
-//       </Canvas>
-//       <HeroContent
-//         initial={{ opacity: 0 }}
-//         animate={{ opacity: 1 }}
-//         transition={{ duration: 2 }}
-//       >
-//         <h1>Shaheenur Rahman M</h1>
-//         <h2>AI & Data Science Enthusiast</h2>
-//         <p>Welcome to my portfolio! Explore my work and journey.</p>
-//       </HeroContent>
-      
-//       <ScrollIndicator
-//         initial={{ opacity: 0 }}
-//         animate={{ opacity: 1 }}
-//         transition={{ delay: 2.5 }}
-//         onClick={scrollToAbout}
-//       >
-//         <span className="scroll-text">Tap to Scroll</span>
-//         <motion.div 
-//           className="arrow-container"
-//           animate={{ y: [0, 5, 0] }}
-//           transition={{ 
-//             duration: 2,
-//             repeat: Infinity,
-//             ease: "easeInOut"
-//           }}
-//         >
-//           <div className="arrow" />
-//         </motion.div>
-//       </ScrollIndicator>
-//     </HeroSection>
-//   );
-// };
-
-// export default Hero;
